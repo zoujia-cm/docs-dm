@@ -53,7 +53,7 @@ jobs:
               python3 scripts/upload.py output_zh.pdf tidb-data-migration-dev-zh-manual.pdf;
             fi
 
-       - deploy:
+      - deploy:
           name: "Publish PDF to S3"
           command: |
             if [ "${CIRCLE_BRANCH}" == "yini/uploadFileToS3" ]; then
