@@ -36,14 +36,29 @@ jobs:
           name: "Generate PDF"
           command: bash scripts/generate_pdf.sh;
 
+      - run:
+          name: Install sdk and awscli
+          command: |
+            pip3 install boto3
+            pip3 install awscli
+            printf "%s\n" ${AWS_ACCESS_KEY} ${AWS_SECRET_KEY} ${AWS_REGION} "json" | aws configure
+
       # echo "222.222.95.49 uc.qbox.me": adds a new host
       - deploy:
-          name: "Publish PDF"
+          name: "Publish PDF to Qiniu"
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               python3 scripts/upload.py output_en.pdf tidb-data-migration-dev-en-manual.pdf;
               python3 scripts/upload.py output_zh.pdf tidb-data-migration-dev-zh-manual.pdf;
+            fi
+
+       - deploy:
+          name: "Publish PDF to S3"
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "yini/uploadFileToS3" ]; then
+              python3 scripts/upload-aws.py output_en.pdf tidb-data-migration-dev-en-manual-test.pdf;
+              python3 scripts/upload-aws.py output_zh.pdf tidb-data-migration-dev-zh-manual-test.pdf;
             fi
 
 workflows:

@@ -3,7 +3,7 @@ import boto3
 import sys
 from botocore.exceptions import ClientError
 
-BUCKET_NAME = 'download.pingcap.org'
+BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
 
 def upload_file(file_name, object_name=None):
     """Upload a file to an S3 bucket
