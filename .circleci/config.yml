@@ -48,8 +48,9 @@ jobs:
 
   uploadToS3:
     docker:
-      - image: ubuntu:latest
+      - image: ubuntu-latest
     working_directory: ~/pingcap/docs-dm
+
     steps:
       - run:
           name: install sdk and awscli
