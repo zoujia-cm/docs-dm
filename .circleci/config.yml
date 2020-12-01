@@ -48,7 +48,7 @@ jobs:
 
   uploadToS3:
     docker:
-      - image: ubuntu:latest
+      - image: circleci/python:latest
     working_directory: ~/pingcap/docs-dm
 
     steps:
